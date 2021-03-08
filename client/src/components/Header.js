@@ -4,7 +4,7 @@ const Header = () => {
   return (
     <div>
       <h1 className='font-weight-light display-1 text-center'>
-        Find byte to eat
+        Find a byte to eat
       </h1>
     </div>
   );
