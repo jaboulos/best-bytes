@@ -73,7 +73,7 @@ const AddRestaurant = () => {
                 />
                 {errors.location && touched.location ? (
                   <div style={{ color: 'red', fontWeight: 'bold' }}>
-                    {errors.name}
+                    {errors.location}
                   </div>
                 ) : null}
               </div>
