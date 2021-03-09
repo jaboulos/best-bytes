@@ -1,12 +1,16 @@
 import React, { useEffect, useContext } from 'react';
 import { Restaurants } from '../apis';
 import { RestaurantsContext } from '../context/RestaurantsContext';
+import { useHistory } from 'react-router-dom';
 
 const RestaurantList = (props) => {
   // save data from useEffect call, store it within restaurants value from context state
   // destructure properties passed from value prop from RestaurantsContext
   const { restaurants, setRestaurants } = useContext(RestaurantsContext);
 
+  // route user to new page 'update' for a given restaurant that they have clicked on and want to update
+  // access history API to do this with useHistory hook from react-router-dom
+  let history = useHistory();
   useEffect(() => {
     const fetchData = async () => {
       // tryCatch block for async calls
@@ -27,9 +31,14 @@ const RestaurantList = (props) => {
     fetchData();
   }, []); // pass empty dependency array to run the hook only when component mounts
 
+  const handleUpdate = async (id) => {
+    // tell react router to route to the /restaurants/id/update route
+    history.push(`/restaurants/${id}/update`);
+  };
+
   const handleDelete = async (id) => {
     try {
-      const response = await Restaurants.delete(`/${id}`);
+      await Restaurants.delete(`/${id}`);
       // update UI after delete, filter out restaurants whos id we want to delete from context
       setRestaurants(
         restaurants.filter((restaurant) => {
@@ -62,7 +71,13 @@ const RestaurantList = (props) => {
                 <td>{'$'.repeat(restaurant.price_range)}</td>
                 <td>1star</td>
                 <td>
-                  <button className='btn btn-info'>Update</button>
+                  {/* Update a restaurant */}
+                  <button
+                    className='btn btn-info'
+                    onClick={() => handleUpdate(restaurant.id)}
+                  >
+                    Update
+                  </button>
                 </td>
                 <td>
                   {/* Delete restaurant from list */}
