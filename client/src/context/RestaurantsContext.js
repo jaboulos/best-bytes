@@ -16,9 +16,15 @@ export const RestaurantsContextProvider = (props) => {
   // setRestaurants will update a restaurant
   const [restaurants, setRestaurants] = useState([]);
 
+  // after adding a restaurant on the UI, update the state
+  const addRestaurants = (restaurant) => {
+    setRestaurants([...restaurants, restaurant]);
+  };
   return (
     // pass value of restaurants to all components and setRestaurants to be able to update state
-    <RestaurantsContext.Provider value={{ restaurants, setRestaurants }}>
+    <RestaurantsContext.Provider
+      value={{ restaurants, setRestaurants, addRestaurants }}
+    >
       {props.children}
     </RestaurantsContext.Provider>
   );
