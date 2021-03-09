@@ -27,6 +27,19 @@ const RestaurantList = (props) => {
     fetchData();
   }, []); // pass empty dependency array to run the hook only when component mounts
 
+  const handleDelete = async (id) => {
+    try {
+      const response = await Restaurants.delete(`/${id}`);
+      // update UI after delete, filter out restaurants whos id we want to delete from context
+      setRestaurants(
+        restaurants.filter((restaurant) => {
+          return restaurant.id !== id;
+        })
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className='list-group'>
       <table className='table table-secondary table-striped table-hover'>
@@ -52,7 +65,13 @@ const RestaurantList = (props) => {
                   <button className='btn btn-info'>Update</button>
                 </td>
                 <td>
-                  <button className='btn btn-danger'>Delete</button>
+                  {/* Delete restaurant from list */}
+                  <button
+                    className='btn btn-danger'
+                    onClick={() => handleDelete(restaurant.id)}
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
