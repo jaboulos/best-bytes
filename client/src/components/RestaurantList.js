@@ -11,6 +11,7 @@ const RestaurantList = (props) => {
   // route user to new page 'update' for a given restaurant that they have clicked on and want to update
   // access history API to do this with useHistory hook from react-router-dom
   let history = useHistory();
+
   useEffect(() => {
     const fetchData = async () => {
       // tryCatch block for async calls
@@ -31,12 +32,20 @@ const RestaurantList = (props) => {
     fetchData();
   }, []); // pass empty dependency array to run the hook only when component mounts
 
-  const handleUpdate = async (id) => {
+  // routes user to a detail page of selected restaurant
+  const handleRestaurantSelect = (id) => {
+    history.push(`/restaurants/${id}`);
+  };
+
+  const handleUpdate = async (e, id) => {
+    // prevent event propagation by passing the event
+    e.stopPropagation();
     // tell react router to route to the /restaurants/id/update route
     history.push(`/restaurants/${id}/update`);
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (e, id) => {
+    e.stopPropagation();
     try {
       await Restaurants.delete(`/${id}`);
       // update UI after delete, filter out restaurants whos id we want to delete from context
@@ -65,7 +74,10 @@ const RestaurantList = (props) => {
         <tbody>
           {restaurants &&
             restaurants.map((restaurant) => (
-              <tr key={restaurant.id}>
+              <tr
+                key={restaurant.id}
+                onClick={() => handleRestaurantSelect(restaurant.id)}
+              >
                 <td>{restaurant.name}</td>
                 <td>{restaurant.location} </td>
                 <td>{'$'.repeat(restaurant.price_range)}</td>
@@ -74,7 +86,7 @@ const RestaurantList = (props) => {
                   {/* Update a restaurant */}
                   <button
                     className='btn btn-info'
-                    onClick={() => handleUpdate(restaurant.id)}
+                    onClick={(e) => handleUpdate(e, restaurant.id)}
                   >
                     Update
                   </button>
@@ -83,7 +95,7 @@ const RestaurantList = (props) => {
                   {/* Delete restaurant from list */}
                   <button
                     className='btn btn-danger'
-                    onClick={() => handleDelete(restaurant.id)}
+                    onClick={(e) => handleDelete(e, restaurant.id)}
                   >
                     Delete
                   </button>
