@@ -13,9 +13,13 @@ const RestaurantDetailPage = () => {
     //retrieve data of selected restaurant and store in state variable in context
     const fetchData = async () => {
       try {
-        const response = await Restaurants.get(`/${id}`);
+        const {
+          data: {
+            data: { restaurants },
+          },
+        } = await Restaurants.get(`/${id}`);
         // update global state to tell rest of app what the selected restaurant is
-        setSelectedRestaurant(response.data.data.restaurants);
+        setSelectedRestaurant(restaurants);
       } catch (error) {
         console.log(error);
       }

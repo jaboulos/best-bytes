@@ -18,11 +18,15 @@ const UpdateRestaurant = (props) => {
   // handle issue if user comes directly to this page or refreshes, need to make api call for those scenarios as well
   useEffect(() => {
     const fetchData = async () => {
-      const response = await Restaurants.get(`/${id}`);
+      const {
+        data: {
+          data: { restaurants },
+        },
+      } = await Restaurants.get(`/${id}`);
       // set values of input fields to values that are retrieved when page loads
-      setName(response.data.data.restaurants.name);
-      setLocation(response.data.data.restaurants.location);
-      setPriceRange(response.data.data.restaurants.price_range);
+      setName(restaurants.name);
+      setLocation(restaurants.location);
+      setPriceRange(restaurants.price_range);
     };
     fetchData();
   }, []);
