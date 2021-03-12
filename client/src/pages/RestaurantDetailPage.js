@@ -30,7 +30,7 @@ const RestaurantDetailPage = () => {
     fetchData();
   }, []);
   // add conditional to render only when the state selectedRestaurant is defined
-  return <div>{selectedRestaurant && <StarRating rating={1} />}</div>;
+  return <div>{selectedRestaurant && <StarRating rating={2.2} />}</div>;
 };
 
 export default RestaurantDetailPage;
